@@ -1,0 +1,66 @@
+# OB_GINS: Optimization-Based GNSS/INS Integrated Navigation System
+
+# 数据文件
+# Data files
+imufile: "dataset/ADIS16465.txt"
+gnssfile: "dataset/GNSS_RTK.pos"
+outputpath: "dataset/"
+
+# 时间信息, s
+# Processing time parameters
+windows: 30
+starttime: 357473
+endtime: 359090
+
+# 初始化信息
+# Initialization parameters
+initvel: [ 0, 0, 0 ]   # 北东地速度 (NED velocity), m/s
+initatt: [ 0, 0, 276 ] # 横滚俯仰航向 (RPY attitude), deg
+
+# IMU初始误差
+# IMU constant biases
+initgb: [ 0, 0, 0 ]  # 初始陀螺零偏 (gyroscope biases), deg/hr
+initab: [ 0, 0, 0 ]  # 初始加表零偏 (accelerometer biases), mGal
+
+# IMU文件数据列数 (7-imu only, 8-with odometer)
+# IMU data file columns
+imudatalen: 8
+# IMU原始数据频率, Hz
+# IMU data rate
+imudatarate: 200
+
+# 考虑地球自转补偿项
+# consider the Earth's rotation
+isearth: true
+
+# 安装参数
+# Installation parameters
+antlever: [ -0.073, 0.302, 0.087 ]  # 天线杆臂 (antenna lever), IMU前右下方向, m
+odolever: [ -0.64, -0.628, 2.122 ]  # 里程计杆臂 (odometer lever), IMU前右下方向, m
+bodyangle: [ 0, -0.30, -1.09 ]       # IMU到载体的旋转角 (mouting angles to construct C_b^v), deg
+
+odometer:
+    isuseodo: true              # use odometer
+
+    std: [ 0.05, 0.05, 0.05 ]   # 里程标准差 (vehicle velocity standard deviation), m/s
+    srw: 100                    # 比例因子误差 (odometer scale-factor standard deviation), PPM
+
+# IMU噪声建模参数
+# IMU noise parameters
+imumodel:
+    arw: 0.1     # deg/sqrt(hr)
+    vrw: 0.1     # m/s/sqrt(hr)
+    gbstd: 25.0   # deg/hr
+    abstd: 200.0  # mGal
+    corrtime: 1.0 # hr
+
+# GNSS仿真中断配置
+# GNSS outage parameters
+isuseoutage: true
+outagetime: 357900
+outagelen: 60
+outageperiod: 150
+
+# 固定阈值GNSS抗差 (m)
+# a fixed threshold for GNSS outlier-culling using positioning standard deviation
+gnssthreshold: 0.2
