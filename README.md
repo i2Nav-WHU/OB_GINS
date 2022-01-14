@@ -102,7 +102,7 @@ SLAM learners.
 
 The source code is released under GPLv3 license.
 
-We are still working on improving the code reliability. For any technical issues, please contact Hailiang
-Tang <thl@whu.edu.cn> or open an issue at this repository.
+We are still working on improving the code reliability. For any technical issues, please contact Hailiang Tang (
+thl@whu.edu.cn) or open an issue at this repository.
 
-For commercial usage, please contact Prof. Xiaoji Niu <xjniu@whu.edu.cn>.
+For commercial usage, please contact Prof. Xiaoji Niu (<xjniu@whu.edu.cn>).
