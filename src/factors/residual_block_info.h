@@ -78,7 +78,7 @@ public:
                 alpha_sq_norm      = alpha / sq_norm;
             }
 
-            for (int i = 0; i < parameter_blocks_.size(); i++) {
+            for (size_t i = 0; i < parameter_blocks_.size(); i++) {
                 // J = sqrt_rho1 * (J - alpha_sq_norm * r* (r.transpose() * J))
                 jacobians_[i] =
                     sqrt_rho1 * (jacobians_[i] - alpha_sq_norm * residuals_ * (residuals_.transpose() * jacobians_[i]));

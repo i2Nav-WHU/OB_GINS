@@ -35,21 +35,25 @@ Wuhan University.
 
 ## 1 Prerequisites
 
-### 1.1 Ceres
+### 1.1 System and compiler
+
+We recommend you use Ubuntu 20.04 with the newest compiler (g++>=8.4 or clang>=7.0).
+
+### 1.2 Ceres
 
 Follow [Ceres installation instructions](http://ceres-solver.org/installation.html).
 
-### 1.2 abseil-cpp
+### 1.3 abseil-cpp
 
 Follow [abseil-cpp installation instructions](https://abseil.io/docs/cpp/quickstart-cmake.html).
 
-### 1.3 Eigen3
+### 1.4 Eigen3
 
 ```
 sudo apt install libeigen3-dev
 ```
 
-### 1.4 yaml-cpp
+### 1.5 yaml-cpp
 
 ```
 sudo apt install libyaml-cpp-dev
@@ -71,7 +75,7 @@ make -j8
 
 # Run demo dataset
 cd ~/OB_GINS
-./bin/ob_gins ob_gins.yaml
+./bin/ob_gins ./dataset/ob_gins.yaml
 
 # Wait until the program finish
 ```

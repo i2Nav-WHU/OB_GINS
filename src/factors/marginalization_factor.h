@@ -53,7 +53,7 @@ public:
         const vector<double *> &remained_block_data = marg_info_->remainedBlockData();
 
         Eigen::VectorXd dx(remained_size);
-        for (int i = 0; i < remained_block_size.size(); i++) {
+        for (size_t i = 0; i < remained_block_size.size(); i++) {
             int size  = remained_block_size[i];
             int index = remained_block_index[i] - marginalizaed_size;
 
@@ -81,7 +81,7 @@ public:
 
         if (jacobians) {
 
-            for (int i = 0; i < remained_block_size.size(); i++) {
+            for (size_t i = 0; i < remained_block_size.size(); i++) {
                 if (jacobians[i]) {
                     int size       = remained_block_size[i];
                     int index      = remained_block_index[i] - marginalizaed_size;

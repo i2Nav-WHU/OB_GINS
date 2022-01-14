@@ -292,7 +292,7 @@ int main(int argc, char *argv[]) {
 
                 // 参数块
                 // add parameter blocks
-                for (int k = 0; k <= preintegrationlist.size(); k++) {
+                for (size_t k = 0; k <= preintegrationlist.size(); k++) {
                     // 位姿
                     ceres::LocalParameterization *parameterization = new (PoseParameterization);
                     problem.AddParameterBlock(statedatalist[k].pose, Preintegration::numPoseParameter(),
@@ -308,7 +308,7 @@ int main(int argc, char *argv[]) {
                 int index = 0;
                 for (auto &data : gnsslist) {
                     auto factor = new GnssFactor(data, antlever);
-                    for (int i = index; i <= preintegrationlist.size(); ++i) {
+                    for (size_t i = index; i <= preintegrationlist.size(); ++i) {
                         if (fabs(data.time - timelist[i]) < MINIMUM_INTERVAL) {
                             problem.AddResidualBlock(factor, nullptr, statedatalist[i].pose);
 
@@ -320,7 +320,7 @@ int main(int argc, char *argv[]) {
 
                 // 预积分残差
                 // preintegration factors
-                for (int k = 0; k < preintegrationlist.size(); k++) {
+                for (size_t k = 0; k < preintegrationlist.size(); k++) {
                     auto factor = new PreintegrationFactor(preintegrationlist[k]);
                     problem.AddResidualBlock(factor, nullptr, statedatalist[k].pose, statedatalist[k].mix,
                                              statedatalist[k + 1].pose, statedatalist[k + 1].mix);
@@ -355,7 +355,7 @@ int main(int argc, char *argv[]) {
                 }
             }
 
-            if (preintegrationlist.size() == windows) {
+            if (preintegrationlist.size() == static_cast<size_t>(windows)) {
                 {
                     // 边缘化
                     // marginalization
@@ -363,7 +363,7 @@ int main(int argc, char *argv[]) {
                     if (last_marginalization_info && last_marginalization_info->isValid()) {
 
                         std::vector<int> marginilized_index;
-                        for (int k = 0; k < last_marginalization_parameter_blocks.size(); k++) {
+                        for (size_t k = 0; k < last_marginalization_parameter_blocks.size(); k++) {
                             if (last_marginalization_parameter_blocks[k] == statedatalist[0].pose ||
                                 last_marginalization_parameter_blocks[k] == statedatalist[0].mix) {
                                 marginilized_index.push_back(k);
@@ -406,7 +406,7 @@ int main(int argc, char *argv[]) {
                     // 数据指针调整
                     // get new pointers
                     std::unordered_map<long, double *> address;
-                    for (int k = 1; k <= preintegrationlist.size(); k++) {
+                    for (size_t k = 1; k <= preintegrationlist.size(); k++) {
                         address[reinterpret_cast<long>(statedatalist[k].pose)] = statedatalist[k - 1].pose;
                         address[reinterpret_cast<long>(statedatalist[k].mix)]  = statedatalist[k - 1].mix;
                     }

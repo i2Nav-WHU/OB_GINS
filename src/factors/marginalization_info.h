@@ -56,7 +56,7 @@ public:
         const auto &parameter_blocks = blockinfo->parameterBlocks();
         const auto &block_sizes      = blockinfo->parameterBlockSizes();
 
-        for (int k = 0; k < parameter_blocks.size(); k++) {
+        for (size_t k = 0; k < parameter_blocks.size(); k++) {
             parameter_block_size_[reinterpret_cast<long>(parameter_blocks[k])] = block_sizes[k];
         }
 
@@ -193,13 +193,13 @@ private:
         b0_ = Eigen::VectorXd::Zero(local_size_);
 
         for (const auto &factor : factors_) {
-            for (int i = 0; i < factor->parameterBlocks().size(); i++) {
+            for (size_t i = 0; i < factor->parameterBlocks().size(); i++) {
                 int row0 = parameter_block_index_[reinterpret_cast<long>(factor->parameterBlocks()[i])];
                 int rows = parameter_block_size_[reinterpret_cast<long>(factor->parameterBlocks()[i])];
                 rows     = (rows == POSE_GLOBAL_SIZE) ? POSE_LOCAL_SIZE : rows;
 
                 Eigen::MatrixXd jacobian_i = factor->jacobians()[i].leftCols(rows);
-                for (int j = i; j < factor->parameterBlocks().size(); ++j) {
+                for (size_t j = i; j < factor->parameterBlocks().size(); ++j) {
                     int col0 = parameter_block_index_[reinterpret_cast<long>(factor->parameterBlocks()[j])];
                     int cols = parameter_block_size_[reinterpret_cast<long>(factor->parameterBlocks()[j])];
                     cols     = (cols == POSE_GLOBAL_SIZE) ? POSE_LOCAL_SIZE : cols;
@@ -251,7 +251,7 @@ private:
             factor->Evaluate();
 
             std::vector<int> block_sizes = factor->parameterBlockSizes();
-            for (int k = 0; k < block_sizes.size(); k++) {
+            for (size_t k = 0; k < block_sizes.size(); k++) {
                 long addr = reinterpret_cast<long>(factor->parameterBlocks()[k]);
                 int size  = block_sizes[k];
 

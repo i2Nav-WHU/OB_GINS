@@ -78,7 +78,7 @@ void PreintegrationBase::reintegration(IntegrationState &state) {
     current_state_ = std::move(state);
     resetState(current_state_);
 
-    for (int k = 1; k < imu_buffer_.size(); k++) {
+    for (size_t k = 1; k < imu_buffer_.size(); k++) {
         integrationProcess(k);
     }
 }
