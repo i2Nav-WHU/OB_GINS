@@ -29,7 +29,7 @@ We open-source OB_GINS, an optimization-based GNSS/INS integrated navigation sys
 
 ### 1.1 System and compiler
 
-We recommend you use Ubuntu 20.04 with the newest compiler (g++>=8.0 or clang>=7.0).
+We recommend you use Ubuntu 18.04 or Ubuntu 20.04 with the newest compiler (gcc>=8.0 or clang>=6.0).
 
 ### 1.2 Ceres
 
