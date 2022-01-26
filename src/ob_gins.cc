@@ -366,7 +366,7 @@ int main(int argc, char *argv[]) {
                         for (size_t k = 0; k < last_marginalization_parameter_blocks.size(); k++) {
                             if (last_marginalization_parameter_blocks[k] == statedatalist[0].pose ||
                                 last_marginalization_parameter_blocks[k] == statedatalist[0].mix) {
-                                marginilized_index.push_back(k);
+                                marginilized_index.push_back(static_cast<int>(k));
                             }
                         }
 
@@ -449,6 +449,7 @@ int main(int argc, char *argv[]) {
     }
 
     navfile.close();
+    errfile.close();
     imufile.close();
     gnssfile.close();
 
