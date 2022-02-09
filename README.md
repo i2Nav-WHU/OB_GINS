@@ -62,7 +62,7 @@ git clone https://github.com/i2Nav-WHU/OB_GINS.git ~/
 # Build OB_GINS
 cd ~/OB_GINS
 mkdir build && cd build
-cmake ../ -DCAMKE_BUILD_TYPE=Release
+cmake ../ -DCMAKE_BUILD_TYPE=Release
 make -j8
 
 # Run demo dataset
