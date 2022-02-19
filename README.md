@@ -31,6 +31,16 @@ We open-source OB_GINS, an optimization-based GNSS/INS integrated navigation sys
 
 We recommend you use Ubuntu 18.04 or Ubuntu 20.04 with the newest compiler (gcc>=8.0 or clang>=6.0).
 
+```shell
+# Ubuntu 18.04
+
+# gcc-8
+sudo apt install gcc-8 g++-8
+
+# or clang
+# sudo apt install clang
+```
+
 ### 1.2 Ceres
 
 Follow [Ceres installation instructions](http://ceres-solver.org/installation.html).
@@ -41,13 +51,13 @@ Follow [abseil-cpp installation instructions](https://abseil.io/docs/cpp/quickst
 
 ### 1.4 Eigen3
 
-```
+```shell
 sudo apt install libeigen3-dev
 ```
 
 ### 1.5 yaml-cpp
 
-```
+```shell
 sudo apt install libyaml-cpp-dev
 ```
 
@@ -55,14 +65,19 @@ sudo apt install libyaml-cpp-dev
 
 Once the prerequisites have been installed, you can clone this repository and build OB_GINS as follows:
 
-```
+```shell
 # Clone the repository
 git clone https://github.com/i2Nav-WHU/OB_GINS.git ~/
 
 # Build OB_GINS
 cd ~/OB_GINS
 mkdir build && cd build
-cmake ../ -DCMAKE_BUILD_TYPE=Release
+
+# gcc
+cmake ../ -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=gcc-8 -DCMAKE_CXX_COMPILER=g++-8
+# clang
+# cmake ../ -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++
+
 make -j8
 
 # Run demo dataset
