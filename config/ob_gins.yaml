@@ -34,7 +34,7 @@ imudatarate: 200
 isearth: true
 
 # 安装参数
-# INstallation parameters
+# Installation parameters
 antlever: [ 0, 0, 0 ]  # 天线杆臂 (antenna lever), IMU前右下方向, m
 odolever: [ 0, 0, 0 ]  # 里程计杆臂 (odometer lever), IMU前右下方向, m
 bodyangle: [ 0, 0, 0 ] # IMU到载体的旋转角 (mouting angles to construct C_b^v), deg
@@ -61,6 +61,7 @@ outagetime: 0
 outagelen: 60
 outageperiod: 180
 
-# 固定阈值GNSS抗差 (m)
+# 固定阈值GNSS抗差 (m), 需要根据数据的实际情况调整
 # a fixed threshold for GNSS outlier-culling using positioning standard deviation
-gnssthreshold: 0.2
+# must be set according to your own dataset
+gnssthreshold: 20.0
