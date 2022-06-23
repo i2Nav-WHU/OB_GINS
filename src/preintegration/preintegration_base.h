@@ -115,6 +115,7 @@ public:
     static constexpr int NUM_POSE = 7;
 
 protected:
+    // TODO: You can set these parameters according to your IMU
     static constexpr double IMU_GRY_BIAS_STD = 7200 / 3600.0 * M_PI / 180.0; // 7200 deg / hr
     static constexpr double IMU_ACC_BIAS_STD = 2.0e4 * 1.0e-5;               // 20000 mGal
     static constexpr double IMU_SCALE_STD    = 5.0e3 * 1.0e-6;               // 5000 PPM

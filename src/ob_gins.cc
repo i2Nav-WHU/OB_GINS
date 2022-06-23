@@ -34,7 +34,9 @@
 #include "src/preintegration/preintegration.h"
 #include "src/preintegration/preintegration_factor.h"
 
+#include <absl/strings/str_format.h>
 #include <absl/time/clock.h>
+#include <deque>
 #include <iomanip>
 #include <yaml-cpp/yaml.h>
 
@@ -54,6 +56,8 @@ int main(int argc, char *argv[]) {
         return -1;
     }
 
+    std::cout << "\nOB_GINS: An Optimization-Based GNSS/INS Integrated Navigation System\n\n";
+
     auto ts = absl::Now();
 
     // 读取配置
@@ -72,6 +76,14 @@ int main(int argc, char *argv[]) {
     int windows   = config["windows"].as<int>();
     int starttime = config["starttime"].as<int>();
     int endtime   = config["endtime"].as<int>();
+
+    // 迭代次数
+    // number of iterations
+    int num_iterations = config["num_iterations"].as<int>();
+
+    // 进行GNSS粗差检测
+    // Do GNSS outlier culling
+    bool is_outlier_culling = config["is_outlier_culling"].as<bool>();
 
     // 初始化信息
     // initialization
@@ -165,11 +177,11 @@ int main(int argc, char *argv[]) {
     // 站心坐标系原点
     parameters->station = station_origin;
 
-    std::vector<std::shared_ptr<PreintegrationBase>> preintegrationlist;
     std::vector<IntegrationState> statelist(windows + 1);
     std::vector<IntegrationStateData> statedatalist(windows + 1);
-    std::vector<GNSS> gnsslist;
-    std::vector<double> timelist;
+    std::deque<std::shared_ptr<PreintegrationBase>> preintegrationlist;
+    std::deque<GNSS> gnsslist;
+    std::deque<double> timelist;
 
     Preintegration::PreintegrationOptions preintegration_options = Preintegration::getOptions(isuseodo, isearth);
 
@@ -281,14 +293,16 @@ int main(int argc, char *argv[]) {
             // 构建优化问题
             // construct optimization problem
             {
+                ceres::Problem::Options problem_options;
+                problem_options.enable_fast_removal = true;
+
+                ceres::Problem problem(problem_options);
                 ceres::Solver solver;
-                ceres::Problem problem;
                 ceres::Solver::Summary summary;
                 ceres::Solver::Options options;
                 options.trust_region_strategy_type = ceres::LEVENBERG_MARQUARDT;
                 options.linear_solver_type         = ceres::SPARSE_NORMAL_CHOLESKY;
                 options.num_threads                = 4;
-                options.max_num_iterations         = 50;
 
                 // 参数块
                 // add parameter blocks
@@ -304,14 +318,16 @@ int main(int argc, char *argv[]) {
 
                 // GNSS残差
                 // GNSS factors
-                // Add outlier culling as you need
                 int index = 0;
-                for (auto &data : gnsslist) {
-                    auto factor = new GnssFactor(data, antlever);
-                    for (size_t i = index; i <= preintegrationlist.size(); ++i) {
-                        if (fabs(data.time - timelist[i]) < MINIMUM_INTERVAL) {
-                            problem.AddResidualBlock(factor, nullptr, statedatalist[i].pose);
 
+                ceres::LossFunction *loss_function = new ceres::HuberLoss(1.0);
+                std::vector<std::pair<double, ceres::ResidualBlockId>> gnss_residualblock_id;
+                for (const auto &gnss : gnsslist) {
+                    auto factor = new GnssFactor(gnss, antlever);
+                    for (size_t i = index; i <= preintegrationlist.size(); ++i) {
+                        if (fabs(gnss.time - timelist[i]) < MINIMUM_INTERVAL) {
+                            auto id = problem.AddResidualBlock(factor, loss_function, statedatalist[i].pose);
+                            gnss_residualblock_id.push_back(std::make_pair(gnss.time, id));
                             index++;
                             break;
                         }
@@ -341,8 +357,65 @@ int main(int argc, char *argv[]) {
 
                 // 求解最小二乘
                 // solve the Least-Squares problem
+                options.max_num_iterations = num_iterations / 4;
                 solver.Solve(options, &problem, &summary);
-                //                std::cout << sow - 1 << ": " << summary.BriefReport() << std::endl;
+
+                // TODO: Just a example, you need remodify.
+                // Do GNSS outlier culling using chi-square test
+                if (is_outlier_culling && !gnss_residualblock_id.empty()) {
+                    // 3 degrees of freedom, 0.05
+                    double chi2_threshold = 7.815;
+
+                    // Find GNSS outliers in the window
+                    std::unordered_set<double> gnss_outlier;
+                    for (size_t k = 0; k < gnsslist.size(); k++) {
+                        auto time = gnss_residualblock_id[k].first;
+                        auto id   = gnss_residualblock_id[k].second;
+
+                        double cost;
+                        double chi2;
+
+                        problem.EvaluateResidualBlock(id, false, &cost, nullptr, nullptr);
+                        chi2 = cost * 2;
+
+                        if (chi2 > chi2_threshold) {
+                            gnss_outlier.insert(time);
+
+                            // Reweigthed GNSS
+                            double scale = sqrt(chi2 / chi2_threshold);
+                            gnsslist[k].std *= scale;
+                        }
+                    }
+                    // // Log outliers
+                    // if (!gnss_outlier.empty()) {
+                    //     std::string log = absl::StrFormat("Reweight GNSS outlier at %g:", sow - 1);
+                    //     for (const auto& time:gnss_outlier) {
+                    //         absl::StrAppendFormat(&log, " %g", time);
+                    //     }
+                    //     std::cout << log << std::endl;
+                    // }
+
+                    // Remove all old GNSS factors
+                    for (const auto &block : gnss_residualblock_id) {
+                        problem.RemoveResidualBlock(block.second);
+                    }
+
+                    // Add GNSS factors without loss function
+                    index = 0;
+                    for (auto &gnss : gnsslist) {
+                        auto factor = new GnssFactor(gnss, antlever);
+                        for (size_t i = index; i <= preintegrationlist.size(); ++i) {
+                            if (fabs(gnss.time - timelist[i]) < MINIMUM_INTERVAL) {
+                                problem.AddResidualBlock(factor, nullptr, statedatalist[i].pose);
+                                index++;
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                options.max_num_iterations = num_iterations * 3 / 4;
+                solver.Solve(options, &problem, &summary);
 
                 // 输出进度
                 // output the percentage
@@ -418,10 +491,10 @@ int main(int argc, char *argv[]) {
                 // sliding window
                 {
                     if (lround(timelist[0]) == lround(gnsslist[0].time)) {
-                        gnsslist.erase(gnsslist.begin());
+                        gnsslist.pop_front();
                     }
-                    timelist.erase(timelist.begin());
-                    preintegrationlist.erase(preintegrationlist.begin());
+                    timelist.pop_front();
+                    preintegrationlist.pop_front();
 
                     for (int k = 0; k < windows; k++) {
                         statedatalist[k] = statedatalist[k + 1];
@@ -454,18 +527,13 @@ int main(int argc, char *argv[]) {
     gnssfile.close();
 
     auto te = absl::Now();
-    std::cout << "\r\nCost " << absl::ToDoubleSeconds(te - ts) << " s in total";
+    std::cout << std::endl << std::endl << "Cost " << absl::ToDoubleSeconds(te - ts) << " s in total" << std::endl;
 
     return 0;
 }
 
 void writeNavResult(double time, const Vector3d &origin, const IntegrationState &state, FileSaver &navfile,
                     FileSaver &errfile) {
-    static int counts = 0;
-    if ((counts++ % 10) != 0) {
-        return;
-    }
-
     vector<double> result;
 
     Vector3d pos = Earth::local2global(origin, state.p);

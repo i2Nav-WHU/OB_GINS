@@ -12,6 +12,14 @@ windows: 30
 starttime: 357473
 endtime: 359090
 
+# 迭代次数
+# number of iterations
+num_iterations: 20
+
+# 进行GNSS粗差检测
+# Do GNSS outlier culling
+is_outlier_culling: false
+
 # 初始化信息
 # Initialization parameters
 initvel: [ 0, 0, 0 ]   # 北东地速度 (NED velocity), m/s

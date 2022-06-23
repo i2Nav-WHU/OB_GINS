@@ -8,9 +8,17 @@ outputpath: ""
 
 # 时间信息, s
 # Processing time parameters
-windows: 60
+windows: 30
 starttime: 0
 endtime: 0
+
+# 迭代次数
+# number of iterations
+num_iterations: 20
+
+# 进行GNSS粗差检测
+# Do GNSS outlier culling
+is_outlier_culling: false
 
 # 初始化信息
 # Initialization parameters
