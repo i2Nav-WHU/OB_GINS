@@ -21,10 +21,17 @@ We open-source OB_GINS, an optimization-based GNSS/INS integrated navigation sys
 
 **Related Paper:**
 
-- Hailiang Tang, Xiaoji Niu, Tisheng Zhang, Jing Fan, and Jingnan Liu, “Exploring the Accuracy Potential of IMU Preintegration in Factor Graph Optimization,” Sep. 2021, Accessed: Sep. 08, 2021. [Online]. Available: https://arxiv.org/abs/2109.03010v1.
+- Hailiang Tang, Tisheng Zhang, Xiaoji Niu, Jing Fan, and Jingnan Liu, “Impact of the Earth Rotation Compensation on MEMS-IMU Preintegration of Factor Graph Optimization,” *IEEE Sensors Journal*, 2022.
 - Le Chang, Xiaoji Niu, and Tianyi Liu, “GNSS/IMU/ODO/LiDAR-SLAM Integrated Navigation System Using IMU/ODO Pre-Integration,” *Sensors*, vol. 20, no. 17, p. 4702, Aug. 2020, doi: [10.3390/s20174702](https://doi.org/10.3390/s20174702).
 - Junxiang Jiang, Xiaoji Niu, and Jingnan Liu, “Improved IMU Preintegration with Gravity Change and Earth Rotation for Optimization-Based GNSS/VINS,” *Remote Sensing*, vol. 12, no. 18, p. 3048, Sep. 2020, doi: [10.3390/rs12183048](https://doi.org/10.3390/rs12183048).
-  
+
+If you use this software for your academic research, please cite our related papers; and give acknowledgement like:
+
+```
+English version: “The authors would like to acknowledge Dr. Xiaoji Niu and the Integrated and Intelligent Navigation (i2Nav) group from Wuhan University for providing the OB_GINS software that was used in the paper.”
+中文模板：“本文作者感谢武汉大学多源智能导航实验室和牛小骥教授开源的OB_GINS软件平台。”
+```
+
 **Contacts:**
 
 - For any technique problem, you can send an email to Dr. Hailiang Tang (thl@whu.edu.cn).
