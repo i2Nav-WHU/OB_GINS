@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.12)
+cmake_minimum_required(VERSION 3.10)
 project(ob_gins)
 
 set(CMAKE_CXX_STANDARD 14)
@@ -35,7 +35,8 @@ find_package(yaml-cpp REQUIRED)
 target_link_libraries(${PROJECT_NAME} ${YAML_CPP_LIBRARIES})
 
 # abseil
-find_package(absl REQUIRED)
+set(ABSL_PROPAGATE_CXX_STD true)
+add_subdirectory(src/thirdparty/abseil-cpp abseil-cpp)
 target_link_libraries(${PROJECT_NAME}
         absl::strings
         absl::str_format
