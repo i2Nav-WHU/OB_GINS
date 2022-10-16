@@ -56,18 +56,13 @@ sudo apt install gcc-8 g++-8
 ### 1.2 Ceres
 
 Follow [Ceres installation instructions](http://ceres-solver.org/installation.html).
-
-### 1.3 abseil-cpp
-
-Follow [abseil-cpp installation instructions](https://abseil.io/docs/cpp/quickstart-cmake.html).
-
-### 1.4 Eigen3
+### 1.3 Eigen3
 
 ```shell
 sudo apt install libeigen3-dev
 ```
 
-### 1.5 yaml-cpp
+### 1.4 yaml-cpp
 
 ```shell
 sudo apt install libyaml-cpp-dev
