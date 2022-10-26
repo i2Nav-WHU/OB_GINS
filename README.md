@@ -35,13 +35,13 @@ English version: “The authors would like to acknowledge Dr. Xiaoji Niu and the
 **Contacts:**
 
 - For any technique problem, you can send an email to Dr. Hailiang Tang (thl@whu.edu.cn).
-- For Chinese users, we also provide a QQ group (481173293) for discussion. You are required to provide your organization and name.
+- For Chinese users, we also provide a QQ group (**481173293**) for discussion. You are required to provide your organization and name.
 
 ## 1 Prerequisites
 
 ### 1.1 System and compiler
 
-We recommend you use Ubuntu 18.04 or Ubuntu 20.04 with the newest compiler (gcc>=8.0 or clang>=6.0).
+We recommend you use Ubuntu 18.04 or Ubuntu 20.04 with the newest compiler (**gcc>=8.0** or **clang>=6.0**).
 
 ```shell
 # Ubuntu 18.04
@@ -55,8 +55,10 @@ sudo apt install gcc-8 g++-8
 
 ### 1.2 Ceres
 
-Follow [Ceres installation instructions](http://ceres-solver.org/installation.html).
+We use Ceres Solver to solve the non-linear least squares problem. The supported version is **Ceres Solver 2.0.0 or 2.1.0**. Please follow [Ceres installation instructions](http://ceres-solver.org/installation.html).
 ### 1.3 Eigen3
+
+The supported version is **Eigen 3.3.7~3.3.9**.
 
 ```shell
 sudo apt install libeigen3-dev
