@@ -28,7 +28,7 @@ PreintegrationEarthOdo::PreintegrationEarthOdo(std::shared_ptr<IntegrationParame
     : PreintegrationBase(std::move(parameters), imu0, std::move(state)) {
 
     // Reset state
-    resetState(state, NUM_STATE);
+    resetState(current_state_, NUM_STATE);
 
     // Set initial noise matrix
     setNoiseMatrix();

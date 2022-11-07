@@ -188,6 +188,7 @@ int main(int argc, char *argv[]) {
     // 初始状态
     // initialization
     IntegrationState state_curr = {
+        .time = round(gnss.time),
         .p    = gnss.blh - Rotation::euler2quaternion(initatt) * antlever,
         .q    = Rotation::euler2quaternion(initatt),
         .v    = initvel,
@@ -285,7 +286,6 @@ int main(int argc, char *argv[]) {
             sow += INTEGRATION_LENGTH;
 
             // 当前整秒状态加入到滑窗中
-            //
             state_curr                               = preintegrationlist.back()->currentState();
             statelist[preintegrationlist.size()]     = state_curr;
             statedatalist[preintegrationlist.size()] = Preintegration::stateToData(state_curr, preintegration_options);
