@@ -29,7 +29,7 @@
 
 #include "src/factors/gnss_factor.h"
 #include "src/factors/marginalization_factor.h"
-#include "src/factors/pose_parameterization.h"
+#include "src/factors/pose_manifold.h"
 #include "src/preintegration/imu_error_factor.h"
 #include "src/preintegration/preintegration.h"
 #include "src/preintegration/preintegration_factor.h"
@@ -308,9 +308,8 @@ int main(int argc, char *argv[]) {
                 // add parameter blocks
                 for (size_t k = 0; k <= preintegrationlist.size(); k++) {
                     // 位姿
-                    ceres::LocalParameterization *parameterization = new (PoseParameterization);
-                    problem.AddParameterBlock(statedatalist[k].pose, Preintegration::numPoseParameter(),
-                                              parameterization);
+                    ceres::Manifold *manifold = new PoseManifold();
+                    problem.AddParameterBlock(statedatalist[k].pose, Preintegration::numPoseParameter(), manifold);
 
                     problem.AddParameterBlock(statedatalist[k].mix,
                                               Preintegration::numMixParameter(preintegration_options));

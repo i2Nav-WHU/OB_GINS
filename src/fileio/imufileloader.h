@@ -55,8 +55,10 @@ public:
         }
 
         // 增量形式
-        if (columns_ > 7) {
+        if (columns_ == 8) {
             imu_.odovel = data_[7] * imu_.dt;
+        } else if (columns_ == 9) {
+            imu_.odovel = 0.5 * (data_[7] + data_[8]) * imu_.dt;
         }
 
         return imu_;

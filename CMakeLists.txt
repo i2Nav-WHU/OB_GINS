@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 project(ob_gins)
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 
 if (CMAKE_BUILD_TYPE MATCHES "Debug")
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall")
@@ -17,6 +17,7 @@ file(GLOB_RECURSE SOURCE
         src/ob_gins.cc
         src/fileio/fileloader.cc
         src/fileio/filesaver.cc
+        src/factors/pose_manifold.cc
         src/preintegration/preintegration_base.cc
         src/preintegration/preintegration_normal.cc
         src/preintegration/preintegration_earth.cc
