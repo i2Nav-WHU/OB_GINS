@@ -187,16 +187,16 @@ int main(int argc, char *argv[]) {
 
     // 初始状态
     // initialization
-    IntegrationState state_curr = {
-        .time = round(gnss.time),
-        .p    = gnss.blh - Rotation::euler2quaternion(initatt) * antlever,
-        .q    = Rotation::euler2quaternion(initatt),
-        .v    = initvel,
-        .bg   = initbg,
-        .ba   = initba,
-        .sodo = 0.0,
-        .abv  = {bodyangle[1], bodyangle[2]},
-    };
+    IntegrationState state_curr;
+    state_curr.time = round(gnss.time);
+    state_curr.p    = gnss.blh - Rotation::euler2quaternion(initatt) * antlever;
+    state_curr.q    = Rotation::euler2quaternion(initatt);
+    state_curr.v    = initvel;
+    state_curr.bg   = initbg;
+    state_curr.ba   = initba;
+    state_curr.sodo = 0.0;
+    state_curr.abv  = {bodyangle[1], bodyangle[2]};
+
     std::cout << "Initilization at " << gnss.time << " s " << std::endl;
 
     statelist[0]     = state_curr;

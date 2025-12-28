@@ -1,0 +1,17 @@
+{
+  "dependencies": [
+    {
+      "name": "ceres",
+      "features": ["eigensparse"]
+    },
+    "eigen3",
+    "yaml-cpp"
+  ],
+  "builtin-baseline": "633afd0db78b420739f3817976a42ed59bd1530c",
+  "overrides": [
+    {
+      "name": "ceres",
+      "version": "2.1.0#5"
+    }
+  ]
+}

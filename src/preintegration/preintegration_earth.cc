@@ -184,21 +184,18 @@ IntegrationState PreintegrationEarth::stateFromData(const IntegrationStateData &
 
 void PreintegrationEarth::constructState(const double *const *parameters, IntegrationState &state0,
                                          IntegrationState &state1) {
-    state0 = IntegrationState{
-        .p  = {parameters[0][0], parameters[0][1], parameters[0][2]},
-        .q  = {parameters[0][6], parameters[0][3], parameters[0][4], parameters[0][5]},
-        .v  = {parameters[1][0], parameters[1][1], parameters[1][2]},
-        .bg = {parameters[1][3], parameters[1][4], parameters[1][5]},
-        .ba = {parameters[1][6], parameters[1][7], parameters[1][8]},
-    };
-
-    state1 = IntegrationState{
-        .p  = {parameters[2][0], parameters[2][1], parameters[2][2]},
-        .q  = {parameters[2][6], parameters[2][3], parameters[2][4], parameters[2][5]},
-        .v  = {parameters[3][0], parameters[3][1], parameters[3][2]},
-        .bg = {parameters[3][3], parameters[3][4], parameters[3][5]},
-        .ba = {parameters[3][6], parameters[3][7], parameters[3][8]},
-    };
+    state0    = IntegrationState();
+    state0.p  = {parameters[0][0], parameters[0][1], parameters[0][2]};
+    state0.q  = {parameters[0][6], parameters[0][3], parameters[0][4], parameters[0][5]};
+    state0.v  = {parameters[1][0], parameters[1][1], parameters[1][2]};
+    state0.bg = {parameters[1][3], parameters[1][4], parameters[1][5]};
+    state0.ba = {parameters[1][6], parameters[1][7], parameters[1][8]};
+    state1    = IntegrationState();
+    state1.p  = {parameters[2][0], parameters[2][1], parameters[2][2]};
+    state1.q  = {parameters[2][6], parameters[2][3], parameters[2][4], parameters[2][5]};
+    state1.v  = {parameters[3][0], parameters[3][1], parameters[3][2]};
+    state1.bg = {parameters[3][3], parameters[3][4], parameters[3][5]};
+    state1.ba = {parameters[3][6], parameters[3][7], parameters[3][8]};
 }
 
 void PreintegrationEarth::integrationProcess(unsigned long index) {
